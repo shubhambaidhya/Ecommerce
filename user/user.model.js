@@ -38,6 +38,8 @@ const userSchema = new mongoose.Schema({
     enum: ["buyer", "seller"],
   },
 });
+
+// to hide password
 userSchema.methods.toJSON = function () {
   let obj = this.toObject(); //or var obj = this;
   delete obj.password;

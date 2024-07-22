@@ -6,28 +6,13 @@ import {
   userValidationSchema,
 } from "./user.validation.js";
 import bcrypt from "bcrypt";
-import validateReqBody from "../middleware/authentication.middleware.js";
+import validateReqBody from "../middleware/validate.req.body.js";
 const router = express.Router();
 
 //* register user
 router.post(
   "/user/register",
-  async (req, res, next) => {
-    //extract data from req.body
-    const data = req.body;
-    // validate data
-    try {
-      //validate data
-      const validatedData = await userValidationSchema.validate(data);
-      req.body = validatedData;
-    } catch (error) {
-      // if validation fails, throw error
-      return res.status(400).send({ message: error.message });
-    }
-    // call next function
-    next();
-  },
-
+  validateReqBody(userValidationSchema),
   async (req, res) => {
     //extract new user from req.body
     const newUser = req.body;
