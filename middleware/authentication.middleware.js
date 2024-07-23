@@ -3,7 +3,7 @@ import User from "../user/user.model.js";
 
 export const isUser = async (req, res, next) => {
   //extract token from req.headers
-  const { authorization } = req.headers; //{ } => object destructure
+  const authorization = req.headers.authorization; //{ } => object destructure
   const splittedArray = authorization?.split(" ");
   const token = splittedArray?.length === 2 ? splittedArray[1] : null;
   //if not token, throw error
