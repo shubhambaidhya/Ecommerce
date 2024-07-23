@@ -1,6 +1,6 @@
 import express from "express";
 import Product from "./product.model.js";
-import { isSeller, isUser } from "../middleware/authentication.middleware.js";
+import { isUser, isSeller } from "../middleware/authentication.middleware.js";
 import validateReqBody from "../middleware/validate.req.body.js";
 import { addProductValidationSchema } from "./product.validation.js";
 const router = express.Router();
