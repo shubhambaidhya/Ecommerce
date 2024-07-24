@@ -7,6 +7,7 @@ import {
 } from "./user.validation.js";
 import bcrypt from "bcrypt";
 import validateReqBody from "../middleware/validate.req.body.js";
+import { isSeller } from "../middleware/authentication.middleware.js";
 const router = express.Router();
 
 //* register user

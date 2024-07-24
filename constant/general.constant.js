@@ -16,3 +16,6 @@ export const productCategories = [
   "stationary",
   "vegetables",
 ];
+
+export const DEFAULT_PAGE = 1;
+export const DEFAULT_LIMIT = 2;
