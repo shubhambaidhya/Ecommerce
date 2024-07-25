@@ -1,6 +1,10 @@
 import express from "express";
 import Product from "./product.model.js";
-import { isUser, isSeller } from "../middleware/authentication.middleware.js";
+import {
+  isUser,
+  isSeller,
+  isBuyer,
+} from "../middleware/authentication.middleware.js";
 import validateReqBody from "../middleware/validate.req.body.js";
 import {
   addProductValidationSchema,
@@ -183,6 +187,52 @@ router.post(
     return res
       .status(200)
       .send({ message: "Seller List...", productList: products });
+  }
+);
+
+//* list product by buyer
+router.post(
+  "/product/buyer/list",
+  isBuyer,
+  validateReqBody(paginationDataValidationSchema),
+  async (req, res) => {
+    //extract pagination data from req.boy
+    const { page, limit, searchText } = req.body;
+
+    //calculate skip
+    const skip = (page - 1) * limit;
+
+    //condition
+    let match = {};
+
+    if (searchText) {
+      match.name = { $regex: searchText, $options: "i" };
+    }
+
+    //find products
+    const products = await Product.aggregate([
+      {
+        $match: match,
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $project: {
+          name: 1,
+          price: 1,
+          brand: 1,
+          image: 1,
+          description: { $substr: ["$description", 0, 150] },
+        },
+      },
+    ]);
+
+    //send res
+    return res.status(200).send({ message: "success", productList: products });
   }
 );
 export default router;
